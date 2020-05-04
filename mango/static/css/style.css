@@ -1,0 +1,110 @@
+.jarallax-keep-img {
+    position: relative;
+    z-index: 0;
+}
+.jarallax-keep-img > .jarallax-img {
+    position: relative;
+    display: block;
+    max-width: 100%;
+    height: auto;
+    z-index: -100;
+}
+
+*, *:after, *:before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-size: 20px;
+    margin: 0;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+.jarallax {
+    min-height: 600px;
+}
+.jarallax-keep-img.demo-float-left {
+    margin-right: 15px;
+    margin-left: -60px;
+}
+.jarallax-keep-img.demo-float-right {
+    margin-left: 15px;
+    margin-right: -60px;
+}
+
+@media screen and (max-width: 600px) {
+    .jarallax-keep-img.demo-float-left,
+    .jarallax-keep-img.demo-float-right {
+        margin-right: 0;
+        margin-left: 0;
+        float: none;
+    }
+}
+
+.splash-table {
+    display: table;
+    width: 100%;
+    height: 1000px;
+    background-color: rgba(39, 35, 51, 0.6);
+    color: #fff;
+}
+.splash-cell {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.main-title {
+    padding: 50px;
+    overflow: hidden;
+}
+.main-title h1,
+.main-title h2,
+.main-title h3 {
+    text-align: center;
+}
+.main-title .container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+.gap-1 {
+    display: table;
+    width: 100%;
+}
+.gap-1 > div {
+    display: table-cell;
+    width: 50%;
+}
+.gap-1 .gap-2 .jarallax,
+.gap-1 .gap-3 .jarallax {
+    padding-top: 56.25%;
+    min-height: 0;
+    height: 0;
+}
+.gap-1 .gap-2 .jarallax {
+    padding-top: 112.5%;
+}
+
+@media screen and (max-width: 780px) {
+    .demo-carousel .demo-carousel-item {
+        width: 50%;
+    }
+}
+@media screen and (max-width: 400px) {
+    .demo-carousel .demo-carousel-item {
+        width: 100%;
+    }
+}
+
+
+/* Mobile */
+@media screen and (max-width: 500px) {
+    .main-title,
+    .demo-content {
+        padding: 50px 30px;
+    }
+}
