@@ -25,12 +25,12 @@ if [ "$1" == "runserver" ]; then
     ls ..
     ls /
     echo "Running migrations"
-    python /mango/manage.py migrate
+    python /code/manage.py migrate
 
     echo "Running collectstatic"
-    python /mango/manage.py collectstatic --noinput
+    python /code/manage.py collectstatic --noinput
 
     create_superuser
 
-    exec /mango/python manage.py "$@"
+    exec /code/python manage.py "$@"
 fi

@@ -9,12 +9,12 @@ ENV DJANGO_DB_HOST="db" \
     DJANGO_SUPERUSER_MAIL="cat@mail" \
     DJANGO_SUPERUSER_PASS="meow"
 
-WORKDIR /mango
+WORKDIR /code
 
-COPY requirements.txt /mango/
+COPY requirements.txt /code/
 RUN pip3 install -r requirements.txt
 
-COPY . /mango/
+COPY . /code/
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
