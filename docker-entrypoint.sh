@@ -1,6 +1,8 @@
 #!/bin/bash
 
 create_superuser="
+import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mangoWeb.settings')
 import django
 django.setup()
 from django.contrib.auth.models import User
@@ -20,17 +22,10 @@ create_superuser() {
 }
 
 if [ "$1" == "runserver" ]; then
-    pwd
-    ls
-    ls ..
-    ls /
     echo "Running migrations"
     python /code/manage.py migrate
 
-    echo "Running collectstatic"
-    python /code/manage.py collectstatic --noinput
-
     create_superuser
 
-    exec /code/python manage.py "$@"
+    exec python /code/manage.py "$@"
 fi
