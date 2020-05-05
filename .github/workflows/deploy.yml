@@ -1,4 +1,4 @@
-name: unit_test
+name: docker-deploy
 
 on:
   push:
