@@ -6,8 +6,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
   mango:
-    build: .
-    command: python /mango/manage.py runserver 0.0.0.0:8000
+    image: nikitaevs:mango
     volumes:
       - .:/mango
     ports:

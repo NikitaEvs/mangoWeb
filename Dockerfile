@@ -9,3 +9,5 @@ COPY requirements.txt /mango/
 RUN pip3 install -r requirements.txt
 
 COPY . /mango/
+
+CMD ["python3", "manage.py", "runserver"]
