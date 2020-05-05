@@ -20,6 +20,9 @@ create_superuser() {
 }
 
 if [ "$1" == "runserver" ]; then
+    pwd
+    apt-get install tree
+    tree
     echo "Running migrations"
     python manage.py migrate
 
