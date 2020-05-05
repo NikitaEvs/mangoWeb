@@ -22,6 +22,8 @@ create_superuser() {
 if [ "$1" == "runserver" ]; then
     pwd
     ls
+    ls ..
+    ls /
     echo "Running migrations"
     python /mango/manage.py migrate
 
