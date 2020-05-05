@@ -81,10 +81,10 @@ WSGI_APPLICATION = 'mangoWeb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': "mangodb",
+        'NAME': "postgres",
         "USER": "postgres",
         "PASSWORD": "meow",
-        "HOST": "127.0.0.1",
+        "HOST": "db",
         "PORT": "5432"
     }
 }
