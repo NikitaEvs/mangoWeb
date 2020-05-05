@@ -6,7 +6,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
   mango:
-    image: nikitaevs:mango
+    image: nikitaevs/mango
     volumes:
       - .:/mango
     ports:
