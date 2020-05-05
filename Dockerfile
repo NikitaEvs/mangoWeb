@@ -15,7 +15,7 @@ WORKDIR /mango
 COPY requirements.txt /mango/
 RUN pip3 install -r requirements.txt
 
-COPY . /mango
+COPY . /mango/
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 

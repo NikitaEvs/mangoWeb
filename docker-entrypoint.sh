@@ -23,12 +23,12 @@ if [ "$1" == "runserver" ]; then
     pwd
     ls
     echo "Running migrations"
-    python manage.py migrate
+    python /mango/manage.py migrate
 
     echo "Running collectstatic"
-    python manage.py collectstatic --noinput
+    python /mango/manage.py collectstatic --noinput
 
     create_superuser
 
-    exec python manage.py "$@"
+    exec /mango/python manage.py "$@"
 fi
