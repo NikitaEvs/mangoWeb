@@ -19,18 +19,7 @@ create_superuser() {
     fi
 }
 
-wait_for_db() {
-    if [ -z "$DJANGO_DB_HOST" ] || [ -z "$DJANGO_DB_PORT" ]; then
-        echo "No django database host or port, not waiting for db."
-    else
-        echo "Waiting for database"
-        dockerize -wait tcp://"$DJANGO_DB_HOST":"$DJANGO_DB_PORT" -timeout 30s
-    fi
-}
-
 if [ "$1" == "runserver" ]; then
-    wait_for_db
-
     echo "Running migrations"
     python manage.py migrate
 

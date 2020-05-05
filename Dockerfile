@@ -9,7 +9,7 @@ ENV DJANGO_DB_HOST="db" \
     DJANGO_SUPERUSER_MAIL="cat@mail" \
     DJANGO_SUPERUSER_PASS="meow"
 
-RUN mkdir mango
+RUN mkdir /mango
 WORKDIR /mango
 
 COPY requirements.txt /mango/
