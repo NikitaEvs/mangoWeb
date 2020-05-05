@@ -8,7 +8,7 @@ services:
   mango:
     image: nikitaevs/mango
     volumes:
-      - .:/mango
+      - .:/code
     ports:
       - 8000:8000
     depends_on:
