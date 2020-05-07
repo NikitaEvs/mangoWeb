@@ -23,7 +23,7 @@ create_superuser() {
 
 if [ "$1" == "runserver" ]; then
     echo "Running migrations"
-    python /code/manage,py makemigrations
+    python /code/manage.py makemigrations
     python /code/manage.py migrate
 
     create_superuser
