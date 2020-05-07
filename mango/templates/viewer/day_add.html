@@ -24,29 +24,36 @@
     </nav>
 
     <nav class="navbar fixed-bottom navbar-expand navbar-dark bg-dark">
-        <div class="d-flex w-100 ">
-            <div class="btn-group ">
-                <button class="btn btn-dark" type="button">
-                    <i class="fa fa-backward" style="font-size: 25px; color: beige"></i>
-                </button>
-                <button class="btn btn-dark" type="button">
-                    <i class="fa fa-pause" style="font-size: 25px; color: beige"></i>
-                </button>
-                <button class="btn btn-dark" type="button">
-                    <i class="fa fa-forward" style="font-size: 25px; color: beige"></i>
+        {% block running_task %}
+            <div class="d-flex w-100 ">
+                {% if running_task %}
+                    <form action="{% url 'day' %}" method="post">
+                        {% csrf_token %}
+                        <div class="btn-group ">
+                            <button class="btn btn-dark" type="submit" name="previous" value="{{ running_task.task_name }}">
+                                <i class="fa fa-backward" style="font-size: 25px; color: beige"></i>
+                            </button>
+                            <button class="btn btn-dark" type="submit" name="pause" value="{{ running_task.task_name }}">
+                                <i class="fa fa-pause" style="font-size: 25px; color: beige"></i>
+                            </button>
+                            <button class="btn btn-dark" type="submit" name="next" value="{{ running_task.task_name }}">
+                                <i class="fa fa-forward" style="font-size: 25px; color: beige"></i>
+                            </button>
+                        </div>
+                    </form>
+                {% endif %}
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar9">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar9">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
-        <div class="navbar-collapse collapse" id="navbar9">
-            <ul class="navbar-nav mx-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Task</a>
-                </li>
-            </ul>
-        </div>
+            <div class="navbar-text mx-auto">
+                {% if running_task %}
+                    {% spaceless %}
+                        <p class="nav navbar-text">{{ running_task.task_name }}</p>
+                    {% endspaceless %}
+                {% endif %}
+            </div>
+        {% endblock %}
         <div class="d-flex w-100">
             &nbsp;
         </div>

@@ -351,20 +351,26 @@ def day_add(request):
     :return:
     """
 
+    running_task = get_running_task(request)
+    context = {}
+
+    if running_task is not None:
+        context["running_task"] = running_task
+
     if request.method == "POST":
         task_name = request.POST.get("text")
         priority = request.POST.get("priority")
 
         if len(task_name) > 100:
             messages.error(request, "Name too looong")
-            return render(request, "viewer/day_add.html", {})
+            return render(request, "viewer/day_add.html", context)
 
         if (task_name is not None) and (priority is not None):
             if len(Task.objects.filter(user=request.user,
                                        task_name=task_name,
                                        is_complete=False)) > 0:
                 messages.error(request, "Task already exist")
-                return render(request, "viewer/day_add.html", {})
+                return render(request, "viewer/day_add.html", context)
 
             if request.POST.get("today") == "true":
                 task = Task.objects.create(user=request.user,
@@ -381,7 +387,7 @@ def day_add(request):
         else:
             messages.error(request, "Invalid fields")
 
-    return render(request, "viewer/day_add.html", {})
+    return render(request, "viewer/day_add.html", context)
 
 
 @login_required(login_url="/login")
