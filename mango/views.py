@@ -354,6 +354,11 @@ def day_add(request):
     if request.method == "POST":
         task_name = request.POST.get("text")
         priority = request.POST.get("priority")
+
+        if len(task_name) > 100:
+            messages.error(request, "Name too looong")
+            return render(request, "viewer/day_add.html", {})
+
         if (task_name is not None) and (priority is not None):
             if len(Task.objects.filter(user=request.user,
                                        task_name=task_name,

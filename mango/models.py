@@ -15,7 +15,7 @@ class Task(models.Model):
     AbstractTask and User
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    task_name = models.CharField(max_length=30)
+    task_name = models.CharField(max_length=100)
     task_priority = models.IntegerField(default=None, blank=True, null=True)
     duration = models.DurationField(default=timedelta(0), blank=True, null=True)
     date_start = models.DateTimeField(default=None, blank=True, null=True)
