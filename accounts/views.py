@@ -18,6 +18,9 @@ def login(request):
     :return:
     """
 
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("day"))
+
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
@@ -31,7 +34,7 @@ def login(request):
                 if not request.POST.get("remember-me", None):
                     request.session.set_expiry(0)
 
-                return HttpResponseRedirect(reverse("mango"))
+                return HttpResponseRedirect(reverse("day"))
             else:
                 message = "Your account is not activated"
         else:
