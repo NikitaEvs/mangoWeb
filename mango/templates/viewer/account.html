@@ -1,0 +1,67 @@
+{% extends 'day-view.html' %}
+{% block main %}
+
+    <nav class="navbar fixed-top navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand" href="..">
+            {% load static %}
+            <img src="{% static "mango.svg" %}" width="30" height="30" class="d-inline-block align-top" alt="">
+            Mango
+        </a>
+        <ul class="navbar-nav mx-auto text-md-center text-left">
+            <li class="nav-item">
+                <a class="nav-link" href="../day">Day</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../calendar">Calendar</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../tasks">Tasks</a>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
+            <li class="nav-item active"><a class="nav-link" href="../account"><i class="fa fa-user-circle"></i> Account</a></li>
+        </ul>
+    </nav>
+
+    <nav class="navbar fixed-bottom navbar-expand navbar-dark bg-dark">
+        {% block running_task %}
+            <div class="d-flex w-100 ">
+                {% if running_task %}
+                    <form action="{% url 'day' %}" method="post">
+                        {% csrf_token %}
+                        <div class="btn-group ">
+                            <button class="btn btn-dark" type="submit" name="previous" value="{{ running_task.task_name }}">
+                                <i class="fa fa-backward" style="font-size: 25px; color: beige"></i>
+                            </button>
+                            <button class="btn btn-dark" type="submit" name="pause" value="{{ running_task.task_name }}">
+                                <i class="fa fa-pause" style="font-size: 25px; color: beige"></i>
+                            </button>
+                            <button class="btn btn-dark" type="submit" name="next" value="{{ running_task.task_name }}">
+                                <i class="fa fa-forward" style="font-size: 25px; color: beige"></i>
+                            </button>
+                        </div>
+                    </form>
+                {% endif %}
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar9">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="navbar-text mx-auto">
+                {% if running_task %}
+                    {% spaceless %}
+                        <p class="nav navbar-text">{{ running_task.task_name }}</p>
+                    {% endspaceless %}
+                {% endif %}
+            </div>
+        {% endblock %}
+        <div class="d-flex w-100">
+            &nbsp;
+        </div>
+    </nav>
+    <div class="card text-white bg-dark mb-3 mx-auto">
+      <div class="card-body">
+            <h5 class="card-title">{{ user.username }}</h5>
+            <a href="../logout" class="btn btn-danger"><i class="fa fa-sign-out"></i> Logout</a>
+      </div>
+    </div>
+{% endblock %}
