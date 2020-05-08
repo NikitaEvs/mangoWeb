@@ -16,6 +16,9 @@ jobs:
 
       - name: TestAndCoverage
         run: |
+          sed -i mangoWeb/settings.py -e 's/"HOST": "db"/"HOST": "localhost"/g'
+          docker run --name postgres -e POSTGRES_PASSWORD=meow -d -p 5432:5432 postgres
+
           coverage run manage.py test
           coverage report
 
