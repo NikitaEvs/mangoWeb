@@ -34,6 +34,7 @@ jobs:
 
           coverage run manage.py test
           coverage report
+          coveralls
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
