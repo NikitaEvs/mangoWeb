@@ -1,9 +1,9 @@
 name: unit_test
 
-on: push
+on: ["push", "pull_request"]
 
 jobs:
-  test:
+  test
     runs-on: ubuntu-latest
 
     steps:
@@ -12,8 +12,15 @@ jobs:
       - name: Build
         run: |
           sudo apt-get install python3-setuptools
+          sudo apt-get install python3-coverage
           pip3 install -r requirements.txt
 
-      - name: Test
+      - name: TestAndCoverage
         run: |
-          python3 manage.py test
+          coverage run manage.py test
+          coverage report
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
