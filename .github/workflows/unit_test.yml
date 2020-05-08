@@ -27,7 +27,7 @@ jobs:
 
       - name: TestAndCoverage
         env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
         run: |
           sed -i mangoWeb/settings.py -e 's/"HOST": "db"/"HOST": "localhost"/g'
           sed -i mangoWeb/settings.py -e 's/"PORT": "5432"/"PORT": "${{ job.services.postgres.ports[5432] }}"/g'
