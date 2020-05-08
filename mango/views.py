@@ -81,7 +81,6 @@ class DayListView(ListView):
         """
         next_task = None
         is_next_task = False
-        print([a.task_name for a in all_task])
         for current_task in all_task:
             if is_next_task:
                 next_task = current_task
@@ -90,7 +89,6 @@ class DayListView(ListView):
                 is_next_task = True
 
         if next_task is not None:
-            print(next_task.task_name)
             next_task.is_running = True
             next_task.date_start = timezone.now()
             next_task.save()
@@ -337,7 +335,6 @@ def get_running_task(request):
                     is_running=True)
 
     if len(running_tasks) > 0:
-        print([t.task_name for t in running_tasks])
         return running_tasks[0]
     else:
         return None
