@@ -42,7 +42,7 @@ __Mango__ - планировщик задач, который реализует
 - [Docker compose](https://docs.docker.com/compose/install/)
 
 Для начала нужно склонить ветку с конфигурацией ```docker-compose.yml```
-(она обновляется автоматичеки)
+(она обновляется автоматичеcки)
 
 ```shell script
 git clone --single-branch --branch docker https://github.com/NikitaEvs/mangoWeb.git
