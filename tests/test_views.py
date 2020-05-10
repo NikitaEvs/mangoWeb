@@ -64,10 +64,10 @@ class AuthViewsTest(TestCase):
                              status_code=302,
                              target_status_code=301)
 
-    def test_nonuser_access_calendar(self):
-        response = self.client.get("/calendar/")
+    def test_nonuser_access_month(self):
+        response = self.client.get("/month/")
 
-        self.assertRedirects(response, "/login?next=/calendar/",
+        self.assertRedirects(response, "/login?next=/month/",
                              status_code=302,
                              target_status_code=301)
 
@@ -139,7 +139,18 @@ class TaskViewsTest(TestCase):
         self.client.login(username="cat", password="meow")
         response = self.client.post("/add/", {
             "text": "a" * 150,
-            "priority": 5
+            "priority": 5,
+            "date": timezone.now().strftime("%Y-%m-%d")
+        })
+
+        self.assertEquals(response.status_code, 200)
+
+    def test_wrong_date(self):
+        self.client.login(username="cat", password="meow")
+        response = self.client.post("/add/", {
+            "text": "a" * 150,
+            "priority": 5,
+            "date": "oops"
         })
 
         self.assertEquals(response.status_code, 200)
@@ -148,7 +159,8 @@ class TaskViewsTest(TestCase):
         self.client.login(username="cat", password="meow")
         response = self.client.post("/add/", {
             "text": "do",
-            "priority": 5
+            "priority": 5,
+            "date": timezone.now().strftime("%Y-%m-%d")
         })
 
         self.assertEquals(response.status_code, 200)
@@ -157,16 +169,17 @@ class TaskViewsTest(TestCase):
         self.client.login(username="cat", password="meow")
         response = self.client.post("/add/", {
             "text": "new",
-            "priority": 5
+            "priority": 5,
+            "date": timezone.now().strftime("%Y-%m-%d")
         })
 
         self.assertRedirects(response, "/day/",
                              status_code=302,
                              target_status_code=200)
 
-    def test_calendar(self):
+    def test_month(self):
         self.client.login(username="cat", password="meow")
-        response = self.client.get("/calendar/")
+        response = self.client.get("/month/")
 
         self.assertEqual(response.status_code, 200)
 
@@ -336,3 +349,25 @@ class DayListViewTest(TestCase):
 
         self.assertTrue(new_current.is_running)
         self.assertFalse(current.is_running)
+
+
+class MonthBiewTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        user = User.objects.create_user(username="cat", password="meow")
+        user.save()
+
+        Task.objects.create(user=user,
+                            task_name="do",
+                            task_priority=1,
+                            date_start=timezone.now())
+
+    def test_show(self):
+        self.client.login(username="cat", password="meow")
+
+        response = self.client.post("/month/", {
+            "request_day": timezone.now().strftime("%Y-%m-%d")
+        })
+
+        self.assertEqual(response.status_code, 200)
