@@ -11,11 +11,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="../day">Day</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="../month">Month</a>
-            </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#">Tasks</a>
+                <a class="nav-link" href="#">Month</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../tasks">Tasks</a>
             </li>
         </ul>
         <ul class="nav navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
@@ -58,15 +58,29 @@
             &nbsp;
         </div>
     </nav>
-    <div class="card text-white bg-dark mb-3 mx-auto">
-      <div class="card-body">
-            <h5 class="card-title">Just do it!</h5>
-            <p class="card-text">All tasks</p>
-            <a href="/add" class="btn btn-warning"><i class="fa fa-plus"></i> Add new</a>
-      </div>
-    </div>
 
-    {% for task in tasks %}
+    {% for day in days %}
+        {% block tasks %}
+            {% if tasks and day.date == request_day %}
+                <div class="card text-white bg-dark mb-3 mx-auto">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ day.date }}</h5>
+                        <p class="card-text">
+                            Task number: {{ day.number_of_tasks }}
+                            <br>
+                            Total priority: {{ day.total_priority }}
+                        </p>
+
+                        <form action="{% url 'month' %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-warning" type="submit">
+                                <i class="fa fa-eye-slash"></i> Hide
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                {% for task in tasks %}
         {% if task.is_complete %}
             <div class="card text-white bg-success mb-3 mx-auto">
               <div class="card-body">
@@ -108,15 +122,16 @@
                     </p>
                     <form action="{% url 'day' %}" method="post">
                         {% csrf_token %}
-                        {% if not task.is_running %}
-                            <button class="btn btn-success" type="submit" name="start" value="{{ task.task_name }}">
-                                <i class="fa fa-play"></i> Start now!
-                            </button>
-                        {% else %}
-                            <p class="card-text">
-                                Task has already started
-                            </p>
-                        {% endif %}
+
+                        <button class="btn btn-success" type="submit" name="start" value="{{ task.task_name }}">
+                            <i class="fa fa-play"></i> Start
+                        </button>
+                        <button class="btn btn-warning" type="submit" name="pause" value="{{ task.task_name }}">
+                            <i class="fa fa-pause"></i> Pause
+                        </button>
+                        <button class="btn btn-danger" type="submit" name="stop" value="{{ task.task_name }}">
+                            <i class="fa fa-stop"></i> Stop
+                        </button>
                     </form>
               </div>
             </div>
@@ -128,4 +143,34 @@
           </div>
         </div>
     {% endfor %}
+            {% else %}
+                <div class="card text-white bg-dark mb-3 mx-auto">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ day.date }}</h5>
+                        <p class="card-text">
+                            Task number: {{ day.number_of_tasks }}
+                            <br>
+                            Total priority: {{ day.total_priority }}
+                        </p>
+
+                        <form action="{% url 'month' %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-success" type="submit" name="request_day" value="{{ day.date }}">
+                                <i class="fa fa-eye"></i> Show
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+        {% endblock %}
+    {% empty %}
+        <div class="card text-white bg-dark mb-3 mx-auto">
+          <div class="card-body">
+                <h5 class="card-title">No tasks, good job!</h5>
+          </div>
+        </div>
+    {% endfor %}
+</nav>
+
+
 {% endblock %}
