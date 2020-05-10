@@ -354,9 +354,20 @@ def day_add(request):
     if running_task is not None:
         context["running_task"] = running_task
 
+    context["date"] = timezone.now().strftime("%Y-%m-%d")
+
     if request.method == "POST":
         task_name = request.POST.get("text")
         priority = request.POST.get("priority")
+
+        try:
+            date = datetime.strptime(request.POST.get("date"), "%Y-%m-%d")
+        except ValueError:
+            messages.error(request, "Invalid date")
+            return render(request, "viewer/day_add.html", context)
+        except TypeError:
+            messages.error(request, "Invalid date")
+            return render(request, "viewer/day_add.html", context)
 
         if len(task_name) > 100:
             messages.error(request, "Name too looong")
@@ -369,15 +380,10 @@ def day_add(request):
                 messages.error(request, "Task already exist")
                 return render(request, "viewer/day_add.html", context)
 
-            if request.POST.get("today") == "true":
-                task = Task.objects.create(user=request.user,
-                                           task_name=task_name,
-                                           task_priority=priority,
-                                           date_start=timezone.now())
-            else:
-                task = Task.objects.create(user=request.user,
-                                           task_name=task_name,
-                                           task_priority=priority)
+            task = Task.objects.create(user=request.user,
+                                       task_name=task_name,
+                                       date_start=date,
+                                       task_priority=priority)
 
             task.save()
             return HttpResponseRedirect(reverse("day"))
@@ -388,9 +394,9 @@ def day_add(request):
 
 
 @login_required(login_url="/login")
-def calendar(request):
+def month(request):
     """
-    Page with the calendar with tasks, available only for authenticated users
+    Page with the month list with tasks, available only for authenticated users
     :param request:
     :return:
     """
@@ -418,8 +424,18 @@ def calendar(request):
 
     context = {"days": days}
 
+    if request.method == "POST" and request.POST.get("request_day") is not None:
+        request_day = request.POST.get("request_day")
+
+        if request_day is not None:
+            context["tasks"] = \
+                Task.objects.filter(user=request.user,
+                                    date_start__date=request_day)\
+                            .order_by("-task_priority")
+            context["request_day"] = request_day
+
     running_task = get_running_task(request)
     if running_task is not None:
         context["running_task"] = running_task
 
-    return render(request, "viewer/calendar.html", context)
+    return render(request, "viewer/month.html", context)
