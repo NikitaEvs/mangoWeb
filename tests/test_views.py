@@ -155,16 +155,6 @@ class TaskViewsTest(TestCase):
 
         self.assertEquals(response.status_code, 200)
 
-    def test_task_already_exist(self):
-        self.client.login(username="cat", password="meow")
-        response = self.client.post("/add/", {
-            "text": "do",
-            "priority": 5,
-            "date": timezone.now().strftime("%Y-%m-%d")
-        })
-
-        self.assertEquals(response.status_code, 200)
-
     def test_successfully_create(self):
         self.client.login(username="cat", password="meow")
         response = self.client.post("/add/", {
@@ -197,8 +187,10 @@ class TasksListViewTest(TestCase):
     def test_start(self):
         self.client.login(username="cat", password="meow")
 
+        task = Task.objects.get(task_name="do")
+
         response = self.client.post("/tasks/", {
-            "start": "do"
+            "start": task.id
         })
 
         self.assertEqual(response.status_code, 200)
@@ -207,8 +199,10 @@ class TasksListViewTest(TestCase):
     def test_delete(self):
         self.client.login(username="cat", password="meow")
 
+        task = Task.objects.get(task_name="del")
+
         response = self.client.post("/tasks/", {
-            "delete": "del"
+            "delete": task.id
         })
 
         self.assertEqual(response.status_code, 200)
@@ -274,84 +268,99 @@ class DayListViewTest(TestCase):
     def test_start(self):
         self.client.login(username="cat", password="meow")
 
+        task = Task.objects.get(task_name="start")
+
         response = self.client.post("/day/", {
-            "start": "start"
+            "start": task.id
         })
 
-        self.assertEqual(response.status_code, 200)
-
         task = Task.objects.get(task_name="start")
+
+        self.assertEqual(response.status_code, 200)
         self.assertTrue(task.is_running)
 
     def test_pause(self):
         self.client.login(username="cat", password="meow")
 
+        task = Task.objects.get(task_name="pause")
+
         response = self.client.post("/day/", {
-            "pause": "pause"
+            "pause": task.id
         })
 
-        self.assertEqual(response.status_code, 200)
-
         task = Task.objects.get(task_name="pause")
+
+        self.assertEqual(response.status_code, 200)
         self.assertFalse(task.is_running)
 
     def test_stop(self):
         self.client.login(username="cat", password="meow")
 
+        task = Task.objects.get(task_name="stop")
+
         response = self.client.post("/day/", {
-            "stop": "stop"
+            "stop": task.id
         })
+
+        task = Task.objects.get(task_name="stop")
 
         self.assertEqual(response.status_code, 200)
 
-        task = Task.objects.get(task_name="stop")
         self.assertFalse(task.is_running)
         self.assertTrue(task.is_complete)
 
     def test_delete(self):
         self.client.login(username="cat", password="meow")
 
+        task = Task.objects.get(task_name="delete")
+
         response = self.client.post("/day/", {
-            "delete": "delete"
+            "delete": task.id
         })
 
         self.assertEqual(response.status_code, 200)
 
-        task = Task.objects.filter(task_name="delete")
-        self.assertEqual(len(task), 0)
+        deleted = Task.objects.filter(task_name="delete")
+
+        self.assertEqual(len(deleted), 0)
 
     def test_previous(self):
         self.client.login(username="cat", password="meow")
 
+        task = Task.objects.get(task_name="current")
+
         response = self.client.post("/day/", {
-            "previous": "current"
+            "previous": task.id
         })
+
+        task = Task.objects.get(task_name="current")
 
         self.assertEqual(response.status_code, 200)
 
         new_current = Task.objects.get(task_name="previous")
-        current = Task.objects.get(task_name="current")
 
         self.assertTrue(new_current.is_running)
-        self.assertFalse(current.is_running)
+        self.assertFalse(task.is_running)
 
     def test_next(self):
         self.client.login(username="cat", password="meow")
+        task = Task.objects.get(task_name="current")
 
         response = self.client.post("/day/", {
-            "next": "current"
+            "next": task.id
         })
+
+        task = Task.objects.get(task_name="current")
 
         self.assertEqual(response.status_code, 200)
 
         new_current = Task.objects.get(task_name="next")
-        current = Task.objects.get(task_name="current")
 
         self.assertTrue(new_current.is_running)
-        self.assertFalse(current.is_running)
+        self.assertFalse(task.is_running)
 
 
-class MonthBiewTest(TestCase):
+class MonthViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
