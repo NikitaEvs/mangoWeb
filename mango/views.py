@@ -379,7 +379,7 @@ def day_add(request):
         if (task_name is not None) and (priority is not None):
             if len(Task.objects.filter(user=request.user,
                                        task_name=task_name,
-                                       date_start=date,
+                                       date_start__date=date,
                                        is_complete=False)) > 0:
                 messages.error(request, "Task already exist")
                 return render(request, "viewer/day_add.html", context)

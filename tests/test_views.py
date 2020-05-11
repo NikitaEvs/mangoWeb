@@ -132,7 +132,10 @@ class TaskViewsTest(TestCase):
         user = User.objects.create_user(username="cat", password="meow")
         user.save()
 
-        task = Task.objects.create(user=user, task_name="do", task_priority=1)
+        task = Task.objects.create(user=user,
+                                   task_name="do",
+                                   task_priority=1,
+                                   date_start=timezone.now())
         task.save()
 
     def test_long_name(self):
@@ -148,9 +151,19 @@ class TaskViewsTest(TestCase):
     def test_wrong_date(self):
         self.client.login(username="cat", password="meow")
         response = self.client.post("/add/", {
-            "text": "a" * 150,
+            "text": "a",
             "priority": 5,
             "date": "oops"
+        })
+
+        self.assertEquals(response.status_code, 200)
+
+    def test_already_exist(self):
+        self.client.login(username="cat", password="meow")
+        response = self.client.post("/add/", {
+            "text": "do",
+            "priority": 1,
+            "date": timezone.now().strftime("%Y-%m-%d")
         })
 
         self.assertEquals(response.status_code, 200)
