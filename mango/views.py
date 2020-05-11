@@ -107,40 +107,40 @@ class DayListView(ListView):
         :return:
         """
         if request.POST.get("start") is not None:
-            task_name = request.POST.get("start")
-            task = Task.objects.filter(user=request.user,
-                                       task_name=task_name)[0]
+            task_id = request.POST.get("start")
+            task = Task.objects.get(user=request.user,
+                                    id=task_id)
             task.is_running = True
             task.date_start = timezone.now()
             task.save()
 
         if request.POST.get("pause") is not None:
-            task_name = request.POST.get("pause")
-            task = Task.objects.filter(user=request.user,
-                                       task_name=task_name)[0]
+            task_id = request.POST.get("pause")
+            task = Task.objects.get(user=request.user,
+                                    id=task_id)
             task.duration += timezone.now() - task.date_start
             task.is_running = False
             task.save()
 
         if request.POST.get("stop") is not None:
-            task_name = request.POST.get("stop")
-            task = Task.objects.filter(user=request.user,
-                                       task_name=task_name)[0]
+            task_id = request.POST.get("stop")
+            task = Task.objects.get(user=request.user,
+                                    id=task_id)
             task.is_running = False
             task.date_finish = timezone.now()
             task.is_complete = True
             task.save()
 
         if request.POST.get("delete") is not None:
-            task_name = request.POST.get("delete")
-            task = Task.objects.filter(user=request.user,
-                                       task_name=task_name)[0]
+            task_id = request.POST.get("delete")
+            task = Task.objects.get(user=request.user,
+                                    id=task_id)
             task.delete()
 
         if request.POST.get("next") is not None:
-            task_name = request.POST.get("next")
-            task = Task.objects.filter(user=request.user,
-                                       task_name=task_name)[0]
+            task_id = request.POST.get("next")
+            task = Task.objects.get(user=request.user,
+                                    id=task_id)
             all_task = \
                 Task.objects\
                     .filter(user=request.user,
@@ -151,9 +151,9 @@ class DayListView(ListView):
             self.turn_next_task(request, all_task, task)
 
         if request.POST.get("previous") is not None:
-            task_name = request.POST.get("previous")
-            task = Task.objects.filter(user=request.user,
-                                       task_name=task_name)[0]
+            task_id = request.POST.get("previous")
+            task = Task.objects.get(user=request.user,
+                                    id=task_id)
             all_task = \
                 Task.objects \
                     .filter(user=request.user,
@@ -280,17 +280,20 @@ class TasksView(ListView):
         :return:
         """
         if request.POST.get("start") is not None:
-            task_name = request.POST.get("start")
-            task = Task.objects.filter(user=request.user,
-                                       task_name=task_name)[0]
+            task_id = request.POST.get("start")
+            date = request.POST.get("date")
+            task = Task.objects.get(user=request.user,
+                                    id=task_id,
+                                    date_start__date=date)
+
             task.is_running = True
             task.date_start = timezone.now()
             task.save()
 
         if request.POST.get("delete") is not None:
-            task_name = request.POST.get("delete")
-            task = Task.objects.filter(user=request.user,
-                                       task_name=task_name)[0]
+            task_id = request.POST.get("delete")
+            task = Task.objects.get(user=request.user,
+                                    id=task_id)
             task.delete()
 
         context = {"tasks": self.get_queryset()}
@@ -376,6 +379,7 @@ def day_add(request):
         if (task_name is not None) and (priority is not None):
             if len(Task.objects.filter(user=request.user,
                                        task_name=task_name,
+                                       date_start=date,
                                        is_complete=False)) > 0:
                 messages.error(request, "Task already exist")
                 return render(request, "viewer/day_add.html", context)
