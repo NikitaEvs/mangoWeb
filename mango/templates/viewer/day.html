@@ -30,13 +30,13 @@
                     <form action="{% url 'day' %}" method="post">
                         {% csrf_token %}
                         <div class="btn-group ">
-                            <button class="btn btn-dark" type="submit" name="previous" value="{{ running_task.task_name }}">
+                            <button class="btn btn-dark" type="submit" name="previous" value="{{ running_task.id }}">
                                 <i class="fa fa-backward" style="font-size: 25px; color: beige"></i>
                             </button>
-                            <button class="btn btn-dark" type="submit" name="pause" value="{{ running_task.task_name }}">
+                            <button class="btn btn-dark" type="submit" name="pause" value="{{ running_task.id }}">
                                 <i class="fa fa-pause" style="font-size: 25px; color: beige"></i>
                             </button>
-                            <button class="btn btn-dark" type="submit" name="next" value="{{ running_task.task_name }}">
+                            <button class="btn btn-dark" type="submit" name="next" value="{{ running_task.id }}">
                                 <i class="fa fa-forward" style="font-size: 25px; color: beige"></i>
                             </button>
                         </div>
@@ -86,7 +86,7 @@
                     <form action="{% url 'day' %}" method="post">
                         {% csrf_token %}
 
-                        <button class="btn btn-dark" type="submit" name="delete" value="{{ task.task_name }}">
+                        <button class="btn btn-dark" type="submit" name="delete" value="{{ task.id }}">
                             <i class="fa fa-trash"></i> Delete
                         </button>
                     </form>
@@ -109,13 +109,13 @@
                     <form action="{% url 'day' %}" method="post">
                         {% csrf_token %}
 
-                        <button class="btn btn-success" type="submit" name="start" value="{{ task.task_name }}">
+                        <button class="btn btn-success" type="submit" name="start" value="{{ task.id }}">
                             <i class="fa fa-play"></i> Start
                         </button>
-                        <button class="btn btn-warning" type="submit" name="pause" value="{{ task.task_name }}">
+                        <button class="btn btn-warning" type="submit" name="pause" value="{{ task.id }}">
                             <i class="fa fa-pause"></i> Pause
                         </button>
-                        <button class="btn btn-danger" type="submit" name="stop" value="{{ task.task_name }}">
+                        <button class="btn btn-danger" type="submit" name="stop" value="{{ task.id }}">
                             <i class="fa fa-stop"></i> Stop
                         </button>
                     </form>

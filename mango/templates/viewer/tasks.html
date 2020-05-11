@@ -30,13 +30,13 @@
                     <form action="{% url 'day' %}" method="post">
                         {% csrf_token %}
                         <div class="btn-group ">
-                            <button class="btn btn-dark" type="submit" name="previous" value="{{ running_task.task_name }}">
+                            <button class="btn btn-dark" type="submit" name="previous" value="{{ running_task.id }}">
                                 <i class="fa fa-backward" style="font-size: 25px; color: beige"></i>
                             </button>
-                            <button class="btn btn-dark" type="submit" name="pause" value="{{ running_task.task_name }}">
+                            <button class="btn btn-dark" type="submit" name="pause" value="{{ running_task.id }}">
                                 <i class="fa fa-pause" style="font-size: 25px; color: beige"></i>
                             </button>
-                            <button class="btn btn-dark" type="submit" name="next" value="{{ running_task.task_name }}">
+                            <button class="btn btn-dark" type="submit" name="next" value="{{ running_task.id }}">
                                 <i class="fa fa-forward" style="font-size: 25px; color: beige"></i>
                             </button>
                         </div>
@@ -86,7 +86,7 @@
                     <form action="{% url 'day' %}" method="post">
                         {% csrf_token %}
 
-                        <button class="btn btn-dark" type="submit" name="delete" value="{{ task.task_name }}">
+                        <button class="btn btn-dark" type="submit" name="delete" value="{{ task.id }}">
                             <i class="fa fa-trash"></i> Delete
                         </button>
                     </form>
@@ -106,12 +106,27 @@
                             {% endwith %}
                         {% endif %}
                     </p>
+                    {% if task.date_start %}
+                        <p class="card-text">
+                            {{ task.date_start|date:"M d, Y" }}
+                        </p>
+                    {% endif %}
                     <form action="{% url 'day' %}" method="post">
                         {% csrf_token %}
                         {% if not task.is_running %}
-                            <button class="btn btn-success" type="submit" name="start" value="{{ task.task_name }}">
+                            <button class="btn btn-success" type="submit" name="start" value="{{ task.id }}">
                                 <i class="fa fa-play"></i> Start now!
                             </button>
+                            <input type="hidden" name="date" value="{{ task.date_start }}">
+                            {% for message in messages %}
+                                <br>
+                                <div class="alert alert-danger alert-dismissible w-50 mx-auto">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+
+                                    {{ message }}
+
+                                </div>
+                            {% endfor %}
                         {% else %}
                             <p class="card-text">
                                 Task has already started
