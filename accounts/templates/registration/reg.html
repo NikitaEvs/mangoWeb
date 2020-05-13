@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block main %}
+    <form class="form-signin" action="{% url 'reg' %}" method="post" id="reg-form">{% csrf_token %}
+        {% load static %}
+        <img class="mb-4" src="{% static "mango.svg" %}" alt="" width="150" height="150">
+        <h1 class="h3 mb-3 font-weight-normal">Let's go</h1>
+        <label for="inputEmail" class="sr-only">Em3ail address</label>
+        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required
+              autofocus>
+        <br>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password"
+               required>
+        <br>
+        <label for="inputSecondPassword" class="sr-only">Repeat password</label>
+        <input type="password" name="secondPassword" id="inputSecondPassword" class="form-control"
+               placeholder="Repeat please"
+               required>
+
+        {% for message in messages %}
+            <br>
+            <div class="alert alert-danger alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+
+                {{ message }}
+
+            </div>
+        {% endfor %}
+        <br>
+        <button class="btn btn-lg btn-dark btn-block" type="submit">Register me</button>
+    </form>
+{% endblock %}

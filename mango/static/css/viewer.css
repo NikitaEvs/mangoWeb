@@ -1,0 +1,46 @@
+body {
+  -ms-flex-align: center;
+  -ms-flex-pack: center;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  padding-top: 105px;
+  padding-bottom: 105px;
+  background-color: #feffdb;
+}
+
+.navbar .navbar-nav > li > a {
+    line-height: 45px;
+ }
+
+@media (max-width: 979px) {
+  body {
+    padding-top: 105px;
+  }
+}
+
+.card {
+    max-width: 1000px;
+    min-width: 1000px;
+}
+
+@media (max-width: 1000px) {
+  .card {
+    min-width: 500px;
+  }
+}
+
+@media (max-width: 500px) {
+  .card {
+    min-width: 0px;
+  }
+}
+
+.navbar-center
+{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    text-align: center;
+}

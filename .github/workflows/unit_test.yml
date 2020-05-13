@@ -1,0 +1,39 @@
+name: unit_test
+
+on: ["push", "pull_request"]
+
+jobs:
+  vm-job:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:10.8
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: meow
+          POSTGRES_DB: postgres
+        ports:
+          - 5432/tcp
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build
+        run: |
+          sudo apt-get install python3-setuptools
+          sudo pip3 install -r requirements.txt
+
+      - name: TestAndCoverage
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
+        run: |
+          sed -i mangoWeb/settings.py -e 's/"HOST": "db"/"HOST": "localhost"/g'
+          sed -i mangoWeb/settings.py -e 's/"PORT": "5432"/"PORT": "${{ job.services.postgres.ports[5432] }}"/g'
+          python3 manage.py makemigrations
+          python3 manage.py migrate
+
+          coverage run manage.py test
+          coverage report
+          coveralls

@@ -1,0 +1,41 @@
+name: docker-deploy
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+      - dev
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Docker login
+        run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Docker build
+        run: docker build -t mango .
+
+      - name: Docker Tag
+        run: |
+          docker tag mango ${{ secrets.DOCKER_USER }}/mango:${{ github.sha }}
+          docker tag mango ${{ secrets.DOCKER_USER }}/mango:latest
+
+      - name: Docker Push
+        run: |
+          docker push ${{ secrets.DOCKER_USER }}/mango:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USER }}/mango:latest
+
+      - name: Deploy compose file
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BRANCH: docker
+          FOLDER: compose
