@@ -73,7 +73,7 @@ docker-compose up -d
 - Coveralls
 
 ### Тесты
-[![Coverage Status](https://coveralls.io/repos/github/NikitaEvs/mangoWeb/badge.svg?branch=tests&t=AYTufv)](https://coveralls.io/github/NikitaEvs/mangoWeb?branch=tests)
+[![Coverage Status](https://coveralls.io/repos/github/NikitaEvs/mangoWeb/badge.svg?branch=master)](https://coveralls.io/github/NikitaEvs/mangoWeb?branch=master)
 
 Написаны:
 
