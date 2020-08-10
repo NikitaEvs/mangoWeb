@@ -3,7 +3,7 @@
 
 ![unit_test](https://github.com/NikitaEvs/mangoWeb/workflows/unit_test/badge.svg)
 ![docker-deploy](https://github.com/NikitaEvs/mangoWeb/workflows/docker-deploy/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/NikitaEvs/mangoWeb/badge.svg?branch=tests&t=AYTufv)](https://coveralls.io/github/NikitaEvs/mangoWeb?branch=tests)
+[![Coverage Status](https://coveralls.io/repos/github/NikitaEvs/mangoWeb/badge.svg?branch=master)](https://coveralls.io/github/NikitaEvs/mangoWeb?branch=master)
 ---
 [Demo](http://51.15.97.72:8000/)
 
