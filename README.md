@@ -11,44 +11,42 @@
 
 ![](.github/pictures/dayTask.png)
 
-## Что это?
-Большинство людей слушают музыку, механика её прослушивания всем понятна.
-Выполнение задач чем-то похоже на прослушивание музыки, только "плейлист" создаётся
-не на основе любимых песен, а на основе самых приоритетных задач.
+## Summary
+Most people listen to music, the mechanics of listening to it are clear to everyone.
+Performing tasks is somewhat similar to listening to music, only a "playlist" is created
+not based on favorite songs, but based on top tasks.
 
-__Mango__ - планировщик задач, который реализует эту концепцию.
+__Mango__ - a task scheduler that implements this concept.
 
-Каждая задача представляет собой отдельный "трек", который можно включить, поставить
-на паузу и выключить, текущая "композиция" находится в нижнем навбаре.
+Each task is a separate "track" that you can turn on, set
+on pause and off, the current "track" is in the lower navbar.
 
-Можно добавлять, смотреть текущие задачи, смотреть задачи по дням, а также
-все существующие задачи.
+You can add, view current tasks, view tasks by day, and
+all existing tasks.
 
-Для каждой задачи фиксируется время начала и время окончания (без учёта времени на паузе),
-так что возможно оценить, сколько времени вы тратите на рутинные задачи *или же доверить
-это дело ML (не реализовано)*, чтобы в будущем планировать время точно и оптимально.
+For each task, the start time and end time are recorded (excluding pause time),
+so it is possible to estimate how much time you spend on routine tasks in order to plan time accurately and optimally in the future.
 
-## Техническая сторона
-### Хочу посмотреть/собрать
-#### Очень быстрый способ :rocket:
-Зайти и посмотреть [сюда](http://51.15.97.72:8000/)
-#### Но я хочу запустить на своей локальной машине :whale2:
-Что же, вот [здесь](https://hub.docker.com/r/nikitaevs/mango) лежит
-последняя стабильная сборка, прошедшая тесты. Как запустить?
+## Technical details
+### I want to see/deploy
+#### Very fast way :rocket:
+See demo [here](http://51.15.97.72:8000/)
+#### Local deployment :whale2:
+[Here](https://hub.docker.com/r/nikitaevs/mango) you
+can find last stable version. How to run?
 
-Требования:
+Requirements:
 
 - [Docker](https://docs.docker.com/get-docker/)
 - [Docker compose](https://docs.docker.com/compose/install/)
 
-Для начала нужно склонить ветку с конфигурацией ```docker-compose.yml```
-(она обновляется автоматичеcки)
+First of all, clone the branch with configuration file ```docker-compose.yml```
 
 ```shell script
 git clone --single-branch --branch docker https://github.com/NikitaEvs/mangoWeb.git
 ```
 
-И поднять ```Docker```
+And run ```Docker```
 
 ```shell script
 docker pull nikitaevs/mango
@@ -56,15 +54,11 @@ cd mangoWeb
 docker-compose up -d
 ```
 
-Готово!
+Success!
 
-Сервис работает на localhost:8000
+System will work on localhost:8000
 
-#### Но я очень хочу собрать руками!
-
-Что же, в таком случае обратитесь ко мне, я вышлю инструкцию ~~(зачем вам это)~~
-
-### Немного про используемые технологии ~~(и инновации)~~
+### Techologies stack:
 - Django
 - PostgreSQL
 - Bootstrap
@@ -72,27 +66,20 @@ docker-compose up -d
 - GiHub Actions
 - Coveralls
 
-### Тесты
+### Tests
 [![Coverage Status](https://coveralls.io/repos/github/NikitaEvs/mangoWeb/badge.svg?branch=master)](https://coveralls.io/github/NikitaEvs/mangoWeb?branch=master)
 
-Написаны:
+List of tests:
 
-- [Unit тесты](tests/test_unit.py)
-- [Тесты на views](tests/test_views.py)
-- [Тесты на models](tests/test_model.py)
+- [Unit tests](tests/test_unit.py)
+- [Views tests](tests/test_views.py)
+- [Models tests](tests/test_model.py)
  
 ### CI/CD
 
-- Для ```push``` и ```pull_request``` настроен
-action, который прогоняет все тесты и
-загружает отчёт на Coveralls
+- For ```push``` and ```pull_request``` configure
+action, which runs all tests and
+loads report on Coveralls
 
-- Для ```pull_request``` в ```master``` и ```dev```
-настроена сборка в ```Docker``` контейнер и загрузка на ```docker-hub``` 
-
-### Известные проблемы
-
-- При добавлении новой задачи, если такая уже существует, необходимо сначала
-закрыть сообщение об ошибке, а только потом переходить на другую страницу
-
-- В мобильной версии немного лагает parallax на главном экране
+- For ```pull_request``` in ```master``` and ```dev```
+configure a builidng in ```Docker``` container and downloading on ```docker-hub``` 
